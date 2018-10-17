@@ -12,6 +12,7 @@ foreach ($lesIpBani as $anIp) {
 		$bani=true;
 	}
 }
+echo $bani;
 if ($bani!=true) {
 	if(!isset($_REQUEST['uc'])){
 		if ($estConnecte) {

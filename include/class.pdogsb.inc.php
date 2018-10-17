@@ -10,16 +10,16 @@
  * $monPdoGsb qui contiendra l'unique instance de la clASse
  
  * @package default
- * @author  LETICEE LORY <06519081 loryleticee@gmail.com>
+ * @author  LETICEE LORY <0665938792 loryleticee@gmail.com>
  * @version    1.0
  * @link       http://www.php.net/manual/fr/book.pdo.php
  */
 
 Class PdoGsb{   		
-      	private static $serveur='mysql:host=mysql2.alwaysdata.com';
+      	private static $serveur='mysql:host=http://127.0.0.1/phpmyadmin';
       	private static $bdd='dbname=ansart-tp_pointageetaccueilsecurite';   		
-      	private static $user='ansart-tp';    		
-      	private static $mdp='Ansarttp91';	
+      	private static $user='root';    		
+      	private static $mdp='';	
 		private static $monPdo;
 		private static $monPdoGsb=null;
 /**
