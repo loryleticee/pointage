@@ -1,0 +1,70 @@
+
+<div id="contenu">
+	<div id="resultat">
+	</div>
+
+<form id="auto-suggest" action="#" method="post">
+    <input id="text" type="text" class="search" name="search" value="Rechercher..." onfocus="if(this.value=='Rechercher...')this.value=''" onKeyup="dan(getElementById('text').value);onl();" onblur="if(this.value=='')this.value='Rechercher...'" autocomplete="off"/>
+</form>
+
+
+<table>
+	<caption><b>Les Pointages Maitrise d'ouvrage d'aujourd'hui</b></caption>
+	<tr>
+    	<!--<th><center>Id</center></th>-->
+		<th><center>Date</center></th>  
+		<th><center>Salarié</center></th>
+		<th><center>Debut</center></th>  
+		<th><center>fin</center></th>
+		<th><center>Debut</center></th>  
+		<th><center>fin</center></th>
+		<th><center>Statut</center></th>
+	</tr>            
+<?php
+//faire un tableau
+for ($i=0;$i<20;$i++) {?>
+	<form action="" method="POST">
+	<!--<tr><td><input type="hidden" id="id"name ="id" value="<?php echo $id ?>"/><?php echo $id?></td>-->
+	<td><?php echo date("d/m/Y"); ?></t>
+	<td><input type="text"></td>
+	<td><input type="text" id="debutD" size="10" name="debut" value="<?php echo date("H:i:s"); ?>" required/></td>
+	<td><input type="text" id="finD" value="<?php echo date("H:i:s"); ?>"size="10" name="date" required/></td>
+	<td><input type="text" id="debutF" size="10" name="debut" value="<?php echo date("H:i:s"); ?>" required/></td>
+	<td><input type="text" id="finF" size="10" name="fin" value="<?php echo date("H:i:s"); ?>" required/></td>
+	<td></td>
+</tr>
+<?php	
+}
+?>
+</table>
+</form><br>
+<table>
+	<caption><b>Les Pointages Materiaux d'aujourd'hui</b></caption>
+	<tr>
+    	<!--<th><center>Id</center></th>-->
+		<th><center>Date</center></th>  
+		<th><center>Materiel</center></th>
+		<th><center>Debut</center></th>  
+		<th><center>fin</center></th>
+		<th><center>Debut</center></th>  
+		<th><center>fin</center></th>
+		<th><center>Statut</center></th>
+	</tr>            
+<?php
+//faire un tableau
+for ($i=0;$i<6;$i++) {?>
+	<form action="" method="POST">
+	<!--<tr><td><input type="hidden" id="id"name ="id" value="<?php echo $id ?>"/><?php echo $id?></td>-->
+	<td><?php echo date("d/m/Y"); ?></td>
+	<td><input type="text"></td>
+	<td><input type="text" id="debutD" size="10" name="debut" value="<?php echo date("H:i:s"); ?>" required/></td>
+	<td><input type="text" id="finD" value=""size="10" name="date" required/></td>
+	<td><input type="text" id="debutF" size="10" name="debut" value="<?php echo date("H:i:s"); ?>" required/></td>
+	<td><input type="text" id="finF" size="10" name="fin" value="<?php echo date("H:i:s"); ?>" required/></td>
+	<td></td>
+</tr>
+<?php	
+}
+?>
+</table>
+</form>

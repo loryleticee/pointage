@@ -1,0 +1,31 @@
+<div id="contenu">
+	<div id="resultat">
+	</div>
+<table>
+	 <caption>LES CHANTIERS</caption>
+             <tr>
+				<th>NOM</th>  
+                <th>NUMERO</th>
+                <th><center>ACTION</center></th>
+             </tr>
+<form action="#" method="POST">
+<?php
+$i=0;
+foreach ($lesChantier as $unChantier) {
+	$id = $unChantier["id"];
+	$nom = $unChantier["libelle"];
+	$num = $unChantier["numero"];
+	?>
+	
+	<tr><p><input type="hidden" id="id<?php echo $i;?>"name ="id" value="<?php echo $id;?>"/></p>
+	<p><td><input type="text" id="nomChant<?php echo $i;?>" value="<?php echo $nom;;?>"size="30" name="nomChant" required="required"/></td></p>
+	<p><td><input type="text" id="numChant<?php echo $i;?>" size="6" name="numChant" value="<?php echo $num;?>" required="required"/></td></p>
+<p><td><input class="button" type="button" style="width:200px;height:50px" onclick="alterChant(<?php echo $i?>);" name="modifierChantier" value="modifier" alt="modifier <?php echo $nom.' '.$num?>" title="modifier <?php echo $nom.' '.$num?>"><input class="button" type="button" name="supprimer" style="width:200px;height:50px" value="supprimer" onclick="delChant(<?php echo $i ?>);"></td></p>
+</tr>
+<?php	
+$i+=1;
+}
+?>
+</form>
+</table>
+</div>

@@ -1,0 +1,31 @@
+<?php
+session_start();
+require_once ("../../include/class.pdogsb.inc.php");
+require_once("../../include/fct.inc.php");
+$pdo = PdoGsb::getPdoGsb();
+$lesIndice=$pdo->getLesIndice();
+if (isset($_POST['date']) && $_POST['date']!='') {
+	$annee=substr($_POST['date'], 0,4);
+	$mois=substr($_POST['date'], 4,2);
+	$jour=substr($_POST['date'], 6,2);
+	$dateOk = checkdate($mois,$jour,$annee);
+	if ($dateOk) {
+		$_SESSION["date"] = $_POST['date'];
+	}
+	else{
+		echo "<div class='erreur'><center>Veuillez saisir un date correcte</center></div>";
+		if (!isset($_SESSION["date"])) {?>
+			<input type="text" name="ladate" size="8" maxlength="8" id="ladate">
+			<input type="button" class="button" value="Dater" style="width:200px;height:40px;" onclick="createSDate(getElementById('ladate').value);">
+			<?php 
+		}else{	
+			$aDay=$_SESSION['date'];	?>
+			<input type="text" name="ladate" size="8" value="<?php echo "$aDay"; ?>" maxlength="8" id="ladate">
+			<input type="button" class="button" value="Dater" style="width:200px;height:40px;" onclick="createSDate(getElementById('ladate').value);">
+		<?php	
+		}
+	}    
+} 
+else {
+    echo "<div class='erreur'><center>Veuillez saisir un date</center></div>";
+}?>

@@ -1,0 +1,82 @@
+﻿<?php
+if(!isset($_REQUEST['action'])){
+	$_REQUEST['action'] = 'demandeConnexion';
+}else{
+	if ($_REQUEST['action'] != "demandeConnexion" && $_REQUEST['action'] != "deconnexion" && $_REQUEST['action'] != "valideConnexion"){
+		if ($estConnecte) {
+		 	$_REQUEST['action'] = 'accueil';
+		}
+		else{
+     		$_REQUEST['action'] = 'demandeConnexion';
+   		}
+	}
+}
+$action = $_REQUEST['action'];
+switch($action){
+	case 'demandeConnexion':{
+		include("vues/v_connexion.php");
+		break;
+	}
+	case 'valideConnexion':{
+		if (isset($_POST['login']) && isset($_POST['mdp'])) {
+			$login = addslashes($_POST['login']);
+			$mdp = addslashes($_POST['mdp']);
+			//recupere le hash du mot de passe correspondant au login dans la base de donnée 
+			$dbhash= $pdo->getHash($login);
+			//Test le hashage
+			$mdpDecript = $pdo->check_password($mdp, $dbhash["mdp"]);
+			//Si le hashage  est bon
+			if($mdpDecript == true){
+				$visiteur = $pdo->getInfosUser($login,$dbhash["mdp"]);
+				if(!is_array($visiteur)){
+					ajouterErreur("Login ou mot de passe incorrect");
+					include("vues/v_erreurs.php");
+					include("vues/v_connexion.php");
+				}
+				else{
+					$id = $visiteur['id'];
+					$nom =  $visiteur['nom'];
+					$prenom = $visiteur['prenom'];
+            		$statut = $visiteur['type'];
+					connecter($id,$nom,$prenom,$statut);
+					include("vues/v_sommaire.php");
+					include("vues/v_accueil.php");
+				}
+			}
+			else{
+				if (!isset($_SESSION["try"])) {
+					$_SESSION["try"]=0;
+				}
+				else{
+					$_SESSION["try"]+=1;
+					if ($_SESSION["try"]>=2) {
+						$pdo->banirIp($_SERVER["REMOTE_ADDR"]);
+					}
+				}
+				ajouterErreur("Login ou mot de passe incorrect");
+					include("vues/v_erreurs.php");
+					include("vues/v_connexion.php");
+			}
+			break;
+		}
+	}
+	case 'deconnexion':{
+		$_SESSION = array();
+		if (ini_get("session.use_cookies")) {
+    		$params = session_get_cookie_params();
+    		setcookie(session_name(), '', time() - 42000,
+        	$params["path"], $params["domain"],
+        	$params["secure"], $params["httponly"]);
+		}
+		deconnecter();
+		include("vues/v_connexion.php");
+		break;
+	}
+	case 'accueil':{
+       include("vues/v_sommaire.php");
+       include("vues/v_accueil.php");
+       break;
+    }
+}
+?>
+

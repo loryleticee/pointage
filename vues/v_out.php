@@ -1,0 +1,1 @@
+<center><h2>Une erreur subite s'est produite sur notre platerforme,notre équipe technique s'en occupe </h2></center>

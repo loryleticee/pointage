@@ -1,0 +1,8 @@
+<?php
+session_start();
+if (isset($_POST['id'])) {
+$d=explode('.', ($_POST['id']));
+$g=$d[0];
+var_dump($_POST['id']);
+	
+}

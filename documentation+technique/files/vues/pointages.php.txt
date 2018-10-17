@@ -1,0 +1,20 @@
+<div id="resultat">
+</div>
+<div id="contenu">
+	<?php if (isset($lesChantiers)){?>
+		   <h2><center><u>Sélectionner une chantier</u></center></h2><center>
+ 	<label for="listChantier" accesskey="n">Chantier : </label>
+		<select id="listChantier" name="listChantier" onchange="voirWeek();">
+			<option value="0"  selected>Selectionner une chantier</option>
+<?php
+foreach ($lesChantiers as $unChantier) {
+		$idChantier= $unChantier["id"];
+		$libChantier= $unChantier["libelle"];?>
+		<option value="<?php echo $idChantier?>"><?php echo $libChantier ?></option>
+<?php }?>
+		</select>
+	</center>
+<div id="lstWeek"></div>
+<?php }else{
+	echo "<div class='erreur'><center>Aucune fiche pour cette semaine<center></div>";
+}?>

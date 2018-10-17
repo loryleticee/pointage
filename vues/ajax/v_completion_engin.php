@@ -1,0 +1,58 @@
+<?php
+session_start();
+require_once ("../../include/class.pdogsb.inc.php");
+require_once("../../include/fct.inc.php");
+$pdo = PdoGsb::getPdoGsb();
+$liste = $pdo->getEnginAnsart();
+$lesIndice=$pdo->getLesIndice();
+if (isset($_POST['letta'])) {
+    $debut = $_POST['letta'];
+} 
+else {
+    $debut = "";
+}
+$debut = strtoupper($debut);
+?><!--<select>--><?php
+function generateOptions($debut,$liste) {
+    foreach ($liste as $element) {
+        $id = $element['id'];
+        $nom = $element['libelle'];
+        $numero = $element['numero'];
+        if (substr($nom, 0, strlen($debut)) == $debut) {
+             $_SESSION["libEngin"]=$nom;
+             $_SESSION["idEngin"]=$id;
+             $_SESSION["numEngin"] = $numero;
+        }elseif(substr($numero, 0,strlen($debut))== $debut) {
+            $_SESSION["libEngin"]=$nom;
+             $_SESSION["idEngin"]=$id;
+             $_SESSION["numEngin"] =$numero;
+        }
+        else{
+        }
+    }
+}
+generateOptions($debut,$liste);
+if (isset($_SESSION["idEngin"]) && isset($_SESSION["libEngin"])) {
+    $engin = $_SESSION["libEngin"];
+    $idEngin = $_SESSION["idEngin"];
+    $numEngin = $_SESSION["numEngin"];
+}
+?>
+<input id='idMateriel' type="hidden" autocomplete="off" size="30"  name="idMateriel" value="<?php if(isset($idEngin)){echo $idEngin;}?>" />
+<input id='materiel' type="hidden" autocomplete="off" size="30"  name="materiel" value="<?php if(isset($engin)){echo $engin;}else{echo '_-'.'`'.') J`ai rien trouvé';}?>" />
+<input id='numMateriel' type="hidden" autocomplete="off" size="3"  name="numMateriel" value="<?php if(isset($numEngin)){echo $numEngin;}?>" />
+<input id='libMateriel' type="text" autocomplete="off" size="30"  name="libMateriel" value="<?php if(isset($engin)){echo $engin ; if(isset($numEngin)){echo ' '.$numEngin;}}else{echo '_-'.'`'.') J`ai rien trouvé';}?>" disabled="disabled" />
+<br><br><h1><center>Choisir une durée</center></h1><br><select id="listIndice" name="listIndice">
+<?php
+    foreach ($lesIndice as $unIndice) {
+        $idIndice = $unIndice["id"];
+        $libIndice = $unIndice["numero"];
+        if ($idIndice == 1){
+            echo "<option value='$idIndice' selected='selected'>$libIndice</option>";
+        }else{
+            echo "<option value='$idIndice'>$libIndice</option>";            
+        }
+    }?>
+        </select>
+        <br><br>
+<input id="submitEngin" name="submitEngin" class="button" type="submit" style="width:800px;height:100px" value="Ajouter">

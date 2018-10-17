@@ -1,0 +1,69 @@
+<?php session_start();
+require_once ("../../include/PHPMailer-master/class.phpmailer.php");
+require_once("../../include/PHPMailer-master/class.smtp.php");
+require_once ("../../include/class.pdogsb.inc.php");
+$pdo = PdoGsb::getPdoGsb();
+//var_dump($_POST);
+if(isset($_POST["message"])){
+    $lesMAP = explode(':', $_POST['message']);
+    $taillelesMAP=count($lesMAP);
+    $id =$_SESSION["chantier"];
+    if ($_POST["message"]!='') {
+        //Pour chaque message
+        for ($i=0; $i <$taillelesMAP ; $i++) { 
+            //Recupere le message
+            $msg=$lesMAP[$i];
+            //Ajoute le message au chantier
+            $add = $pdo->addMAP($id,$msg,$_SESSION["date"]); 
+        }
+    }
+    $getLibChant = $pdo->getLibChantier($id);
+    $chantier= $getLibChant["libelle"].' '.$getLibChant["numero"];
+    if ($_POST["message"]!='') {
+	   $add = $pdo->addMAP($id,$msg,$_SESSION["date"]); 
+	   $leRespChantier = $pdo->getRespChantier($_SESSION["chantier"]);
+       $leResp = $leRespChantier["responsable"];
+       $getMailConduc  = $pdo->getMail($leResp);
+       $mailConduc = $getMailConduc["mail"];
+	   if(!$add){
+		  echo "<div class='erreur'><center> Matériel ajouté avec succès</center></div>";
+	   }
+	   else{
+		  echo "<div class='erreur'><center>Contactez votre webmaster</center></div>";
+	   }
+////////////////////////////////////////////////////////////////SENDING MAIL/////////////////////////////////////////////
+ 		date_default_timezone_set("Europe/Paris");
+ 
+	   $mail = new PHPMailer();//Nouvel instance de mail
+	   $body = utf8_decode("<body style=\"margin: 10px;\">
+			<div style=\"width: 640px; font-family: Arial, Helvetica, sans-serif; font-size: 20px;\">
+			<br>
+			&nbsp;$msg<br>
+			</div>
+			</body>");
+   	    $mail->IsSMTP(); // SMTP Activé
+    	$mail->SMTPDebug = 0; // debogage: 1 = erreurs et messages, 2 = messages uniquement
+    	$mail->SMTPAuth = true; // authentication activé
+    	$mail->SMTPSecure = 'ssl'; // Transfert securisé activé, Requis pour GMail
+    	$mail->Host = "smtp.alwaysdata.com";
+    	$mail->Port = 465; // ou 587
+    	$mail->IsHTML(true);
+    	$mail->Username = "travaux@ansart-tp.com";
+    	$mail->Password = "Ansarttp91";
+    	$mail->SetFrom("noreply@ansart-tp.com");
+    	$mail->Subject = utf8_decode("Materiel à prévoir pour $chantier");
+    	$mail->Body = $body;
+    	$mail->AddAddress("$mailConduc");//Adresse du destinataire $mailConduc
+     	if(!$mail->Send()){
+        //echo "Mailer Error: " . $mail->ErrorInfo;
+        }
+        else{
+        //echo "Message has been sent";
+        }?></div> <?php echo "<div class='erreur'><center>Le Conducteur de travaux sera avertie</center></div>";
+///////////////////////////////////////////////////////////////////////////////////END OF SEND MAIL////////////////////////////////////        
+    }
+}
+else{
+	echo "<div class='erreur'><center>Contactez votre webmaster</center></div>";
+}
+?>
